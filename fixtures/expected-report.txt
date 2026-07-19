@@ -35,5 +35,5 @@ Attribution chain:
     -> memory 'dev-server-setup' written in session s1-onboarding
     -> recalled in session s2-fix-devserver
     -> shell request for com.acme.devhelper  [DENY]
-    -> OS: payload reparented to launchd, Apple-signed binary chain
+    -> OS: workload started by launchd (parent pid 1); Apple-signed system utilities
 ==================================================================

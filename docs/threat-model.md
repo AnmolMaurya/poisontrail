@@ -21,16 +21,19 @@ There is no exploit and no malware in the traditional sense: a trusted developer
 tool, running as the user, uses Apple-signed system utilities to do something the
 user never asked for in that session.
 
-## Why macOS detection struggles
+## Why attribution is hard on macOS
 
 Captured from a real run (see `fixtures/`):
 
-- The persistence payload is **reparented to `launchd` (pid 1)** — process
-  ancestry no longer points back to the assistant.
-- Every binary in the chain (`launchctl`, `bash`, `touch`) is an **Apple-signed
-  platform binary** — code-signing / Team ID checks add nothing.
-- Endpoint telemetry can see *that* a plist was written and a process ran, but
-  not *which document, memory record, or earlier session* caused it.
+- The persistence workload is **started by `launchd`**, so its parent is `launchd`
+  (pid 1) — direct process ancestry no longer points back to the assistant.
+- The **system utilities used** (`launchctl`, `bash`, `touch`) are Apple-signed
+  platform binaries, so code-signing / Team ID checks on them add nothing. (Other
+  components — Python, Ollama, the assistant itself — may not be signed.)
+- Endpoint telemetry can see *that* a plist was written and a process ran, but not
+  *which document, memory record, or earlier session* motivated it. Existing macOS
+  tools can detect LaunchAgent creation; what they lack is attribution back to the
+  untrusted input across the session boundary.
 
 ## What PoisonTrail adds
 

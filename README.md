@@ -11,9 +11,9 @@ sessions**, and run local tools under your account. That combination enables a n
 delivery path: untrusted repository content — a comment, a README, an issue — is
 distilled into the assistant's persistent memory in one session, and **recalled in
 a later, unrelated session** to drive a local OS action such as installing a
-`LaunchAgent`. Because a trusted tool takes the action with Apple-signed binaries
-and the payload is reparented to `launchd`, process-lineage and code-signing
-detection fail.
+`LaunchAgent`. Because the persistence operation uses legitimate system utilities
+and the resulting workload is started by `launchd`, code signing and direct process
+ancestry alone cannot attribute the action to the earlier agent input.
 
 PoisonTrail records provenance at the agent's tool boundary
 (`source -> memory record -> recall -> tool request -> decision`) and correlates it
@@ -45,7 +45,7 @@ Attribution chain:
     -> memory 'dev-server-setup' written in session s1-onboarding
     -> recalled in session s2-fix-devserver
     -> shell request for com.acme.devhelper  [DENY]
-    -> OS: payload reparented to launchd, Apple-signed binary chain
+    -> OS: workload started by launchd (parent pid 1); Apple-signed system utilities
 ```
 
 ## Live demo (throwaway macOS VM)
@@ -77,6 +77,23 @@ docs/                        threat model + Arsenal runbook
 - **Honest scope:** the recall-to-action step is the most model-dependent link and
   is reported as measured behavior; the correlation is deterministic. See
   [`docs/threat-model.md`](docs/threat-model.md).
+
+## Related work & contribution
+
+Memory poisoning of LLM agents is an active, well-published area — e.g. MemoryGraft
+(poisoned experience retrieval from README-like content), MINJA (query-only memory
+injection), Unit 42's work on indirect prompt injection into long-term memory, and
+the "rules file backdoor" class in coding assistants. Agent tracing/provenance
+(PROV-AGENT, OpenTelemetry GenAI) and macOS Endpoint Security tooling (eslogger,
+Santa, BlockBlock) are likewise established.
+
+PoisonTrail does **not** claim that memory poisoning, indirect prompt injection,
+LaunchAgent persistence, provenance tracing, or Endpoint Security collection is
+individually new. Its contribution is the **end-to-end provenance + correlation
+layer**: preserving the relationship between untrusted repository content and a
+persistent memory record, observing that record's recall in a later session, and
+connecting the resulting tool request to macOS endpoint artifacts by path, label,
+and timestamp.
 
 ## Status
 

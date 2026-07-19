@@ -141,7 +141,7 @@ def render(incidents):
         print(f"    -> recalled in session {inc.get('recalled_in', '-')}")
         print(f"    -> {r.get('tool', 'tool')} request for {inc.get('label', 'launchagent')}  [{decision}]")
         if ev:
-            print("    -> OS: payload reparented to launchd, Apple-signed binary chain")
+            print("    -> OS: workload started by launchd (parent pid 1); Apple-signed system utilities")
     print("=" * 66)
 
 def main():
