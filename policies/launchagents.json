@@ -1,0 +1,15 @@
+{
+  "name": "macos-user-persistence",
+  "description": "Flag or block persistence-sensitive tool requests, especially when derived from untrusted content recalled across a session boundary.",
+  "match": {
+    "path_prefixes": ["~/Library/LaunchAgents", "/Library/LaunchAgents", "/Library/LaunchDaemons"],
+    "commands": ["launchctl", "launchd"],
+    "artifact_suffixes": [".plist"]
+  },
+  "conditions": {
+    "elevate_if_source_untrusted": true,
+    "elevate_if_cross_session_memory": true
+  },
+  "default_decision": "deny",
+  "on_match": "deny_or_require_approval"
+}

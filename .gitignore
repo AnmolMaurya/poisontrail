@@ -1,0 +1,8 @@
+# runtime artifacts
+demo/.memory-bank/
+demo/agent-events.jsonl
+demo/es-events.jsonl
+demo/PWNED_*
+__pycache__/
+*.pyc
+.DS_Store
