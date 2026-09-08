@@ -107,4 +107,4 @@ export for SIEMs.
 Run live mode in a throwaway VM only. The demo payload writes a harmless marker
 file — no network, credentials, protected-resource access, or evasion. MIT licensed.
 
-*Author: Anmol Maurya (Manifold Security). Vendor-neutral; not a commercial product.*
+*Author: Anmol Maurya. Vendor-neutral; not a commercial product.*
